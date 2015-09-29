@@ -12,13 +12,15 @@ module GameUtil
         private menuNormalTexture:egret.Texture = null;
         private menuSelectTexture:egret.Texture = null;
         private backFun: Function;
-        private param = { context: null, data: null };//回调参数
+        private param:any[];//回调参数
+        private thisObj;
         private btnImg: egret.Bitmap;
 
-        public constructor(context: any, normal: string, select: string, backFun: Function = null)
+        public constructor(context: any, normal: string, select: string, backFun: Function = null,param:any[] = null)
         {
             super();
-            this.param = context;
+            this.thisObj = context;
+            this.param = param;
             this.init(normal,select,backFun);
         }
 
@@ -55,7 +57,7 @@ module GameUtil
             //console.log("touchend");
             this.btnImg.texture = this.menuNormalTexture;
 
-            this.backFun.apply(this.param.context,[this.param.data]);
+            this.backFun.apply(this.thisObj,this.param);
 
         }
         private TouchCancel(event:egret.TouchEvent):void

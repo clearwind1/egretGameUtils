@@ -12,12 +12,12 @@ module GameUtil
         private onLoader: Function;
         private thisObj: any;
 
-        public constructor(reqMethod?:string=egret.URLRequestMethod.POST,dataFormat?:string=egret.URLLoaderDataFormat.TEXT)
+        public constructor(reqMethod:string=egret.URLRequestMethod.POST,dataFormat:string=egret.URLLoaderDataFormat.TEXT)
         {
             this.init(reqMethod,dataFormat);
         }
 
-        private init(reqMethod?:string=egret.URLRequestMethod.POST,dataFormat?:string=egret.URLLoaderDataFormat.TEXT):void
+        private init(reqMethod:string=egret.URLRequestMethod.POST,dataFormat:string=egret.URLLoaderDataFormat.TEXT):void
         {
             this.urlLoader = new egret.URLLoader();
             this.urlLoader.dataFormat = dataFormat;
@@ -52,7 +52,7 @@ module GameUtil
 
         private static _instance:Http;
 
-        public static getinstance(reqMethod?:string=egret.URLRequestMethod.POST,dataFormat?:string=egret.URLLoaderDataFormat.TEXT):Http
+        public static getinstance(reqMethod:string=egret.URLRequestMethod.POST,dataFormat:string=egret.URLLoaderDataFormat.TEXT):Http
         {
             if( null == Http._instance )
             {
