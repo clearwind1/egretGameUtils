@@ -14,17 +14,19 @@ module GameUtil
         private loadingbar: egret.Bitmap;
         private loadedfun: Function;
         private thisObj: any;
+        private imageUrl:string;
 
-        public constructor(fun:Function,obj:any)
+        public constructor(fun:Function,obj:any,url:string="loadingbar.png")
         {
             this.loadedfun = fun;
             this.thisObj = obj;
+            this.imageUrl = "/resource/assets/" + url;
             super();
         }
 
         public init():void
         {
-            RES.getResByUrl('/resource/assets/loadingbar.png',this.onComplete,this,RES.ResourceItem.TYPE_IMAGE);
+            RES.getResByUrl(this.imageUrl,this.onComplete,this,RES.ResourceItem.TYPE_IMAGE);
 
         }
         private onComplete(event:any):void
@@ -42,7 +44,7 @@ module GameUtil
 
             this.loadingbar.width = 10;
 
-            console.log("thiswidth=======",this.width);
+            //console.log("thiswidth=======",this.width);
 
             //egret.MainContext.instance.stage.addChild(this);
 
@@ -84,8 +86,10 @@ module GameUtil
                 RES.removeEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
                 RES.removeEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onResourceLoadError, this);
                 RES.removeEventListener(RES.ResourceEvent.GROUP_PROGRESS, this.onResourceProgress, this);
-                egret.Profiler.getInstance().run();
-                //this.createGameScene();
+
+                if(GameUtil.GameConfig.bRunFPS)
+                    egret.Profiler.getInstance().run();
+
                 this.loadedfun.apply(this.thisObj);
             }
         }
@@ -116,7 +120,7 @@ module GameUtil
         public setPro(persend:number):void
         {
             this.loadingbar.width = this.loadingbar.texture.textureWidth*persend;
-            console.log("this.width=====",this.width);
+            //console.log("this.width=====",this.width);
         }
 
         public getPro():number

@@ -4,11 +4,11 @@
 module GameUtil
 {
 
-    export function getIP():string
+    //游戏配置
+    export class GameConfig
     {
-        var IP:string = "192.168.0.1";
-        IP = "httpbin.org/";
-        return IP;
+        public static IP:string = "localhost:8080/";        //http连接地址
+        public static bRunFPS:boolean = false;              //是否显示FPS
     }
 
     /*
@@ -21,6 +21,21 @@ module GameUtil
         result.texture = texture;
         result.anchorX = result.anchorY = 0.5;
         return result;
+    }
+
+    /*
+    *创建文字
+    */
+    export function createTextField(x:number,y:number,size:number,anchorX:number=0.5,anchorY:number=0.5,align:string="center"):egret.TextField
+    {
+        var textfiled:egret.TextField = new egret.TextField();
+        textfiled.x = x;
+        textfiled.y = y;
+        textfiled.anchorX = anchorX;
+        textfiled.anchorY = anchorY;
+        textfiled.size = size;
+        textfiled.textAlign = align;
+        return textfiled;
     }
 
     /**

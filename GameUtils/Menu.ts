@@ -16,6 +16,8 @@ module GameUtil
         private thisObj;
         private btnImg: egret.Bitmap;
 
+        private bScaleMode: boolean = false;
+
         public constructor(context: any, normal: string, select: string, backFun: Function = null,param:any[] = null)
         {
             super();
@@ -43,10 +45,19 @@ module GameUtil
             this.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE,this.TouchCancel,this);
         }
 
+        public setScaleMode():void
+        {
+            this.bScaleMode = true;
+        }
+
         private TouchBegin(event:egret.TouchEvent):void
         {
             //console.log("touchbegin");
             this.btnImg.texture = this.menuSelectTexture;
+            if(this.bScaleMode)
+            {
+                this.btnImg.scaleX = this.btnImg.scaleY = 0.9;
+            }
         }
         private TouchMove(event:egret.TouchEvent):void
         {
@@ -56,6 +67,10 @@ module GameUtil
         {
             //console.log("touchend");
             this.btnImg.texture = this.menuNormalTexture;
+            if(this.bScaleMode)
+            {
+                this.btnImg.scaleX = this.btnImg.scaleY = 1;
+            }
 
             this.backFun.apply(this.thisObj,this.param);
 
@@ -64,6 +79,10 @@ module GameUtil
         {
             //console.log("touchcancel");
             this.btnImg.texture = this.menuNormalTexture;
+            if(this.bScaleMode)
+            {
+                this.btnImg.scaleX = this.btnImg.scaleY = 1;
+            }
         }
     }
 }

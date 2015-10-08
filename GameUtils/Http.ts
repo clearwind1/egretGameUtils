@@ -40,7 +40,7 @@ module GameUtil
 
         public send( param:any, file?:string, loaded:Function = null, thisObj:any = null):void
         {
-            this.urlRequest.url = "Http://"+GameUtil.getIP()+file;
+            this.urlRequest.url = "Http://"+GameUtil.GameConfig.IP+file;
             this.onLoader = loaded;
             this.thisObj = thisObj;
             var urlVariables:egret.URLVariables = new egret.URLVariables( GameUtil.objectToString( param ) );
