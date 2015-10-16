@@ -28,6 +28,16 @@ module GameUtil
             this.progressbar.anchorY = anchorY;
         }
 
+        public setbarX(x:number):void
+        {
+            this.progressbar.x = x;
+        }
+
+        public setbarY(y:number):void
+        {
+            this.progressbar.y = y;
+        }
+
         public setPercent(percent:number):void
         {
             if(percent < 0) return;
