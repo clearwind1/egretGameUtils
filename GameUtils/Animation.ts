@@ -18,6 +18,12 @@ module GameUtil
         private endcallfun: Function = null;
         private thisObj: any = null;
 
+        /**
+         * 创建一个帧动画。
+         * @param textureName {string} 帧动画文件名的前缀。
+         * @param totalNumber {number} 总帧数。
+         * @param frameRate {number} 帧率。
+         */
         public constructor(textureName:string,totalNumber:number,frameRate:number)
         {
             super();
@@ -36,6 +42,10 @@ module GameUtil
 
         }
 
+        /**
+         * 设置动画循环次数，参数小于0为无限循环
+         * @param bloopcount {number}
+         */
         public setLoop(bloopcount:number)
         {
             if(bloopcount == 0)
@@ -93,7 +103,11 @@ module GameUtil
             this.texture = RES.getRes(this.textureName+this.currentNumber);
         }
 
-
+        /**
+         * 动画播放完毕后要执行的函数
+         * @param func {Function} 所要执行的函数
+         * @param thisobj {any} 执行函数的stage
+         */
         public setendcall(func:Function,thisobj:any):void
         {
             this.thisObj = thisobj;

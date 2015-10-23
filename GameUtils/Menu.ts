@@ -17,7 +17,16 @@ module GameUtil
         private btnImg: egret.Bitmap;
 
         private bScaleMode: boolean = false;
+        private mScale: number = 0.9;
 
+        /**
+         * 创建菜单按钮类
+         * @param context {any} 按钮所在stage
+         * @param normal {string} 按钮普通状态下的图片文件名
+         * @param select {string} 按钮选中状态下的图片文件名
+         * @param backFun {Function} 按钮绑定的事件函数
+         * @param param {any[]} 按钮绑定的事件函数的参数
+         */
         public constructor(context: any, normal: string, select: string, backFun: Function = null,param:any[] = null)
         {
             super();
@@ -45,9 +54,14 @@ module GameUtil
             this.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE,this.TouchCancel,this);
         }
 
-        public setScaleMode():void
+        /**
+         * 设置按钮的缩放模式，按钮状态只做缩放时可使用
+         * @param scale {number} 缩放大小
+         */
+        public setScaleMode(scale:number = 0.9):void
         {
             this.bScaleMode = true;
+            this.mScale = scale;
         }
 
         private TouchBegin(event:egret.TouchEvent):void
@@ -56,7 +70,7 @@ module GameUtil
             this.btnImg.texture = this.menuSelectTexture;
             if(this.bScaleMode)
             {
-                this.btnImg.scaleX = this.btnImg.scaleY = 0.9;
+                this.btnImg.scaleX = this.btnImg.scaleY = this.mScale;
             }
         }
         private TouchMove(event:egret.TouchEvent):void
