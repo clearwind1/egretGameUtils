@@ -5,28 +5,53 @@
 
 module GameUtil
 {
-    export class TipsPanel extends BassPanel
+    export class TipsPanel extends egret.DisplayObjectContainer
     {
-        private textsize:number;
+        private textsize:number = 30;
         private tipText:string;
         private tipbg:egret.Bitmap;
         private text:egret.TextField;
+        private tipImg:string;
+        private bDisappear:boolean;
+        private disSecond:number;
 
-        public constructor(tipText:string,size:number=30)
+        public mStageW = egret.MainContext.instance.stage.stageWidth;
+        public mStageH = egret.MainContext.instance.stage.stageHeight;
+
+        public constructor(tipimg:string,tipText:string,disp:boolean=false,sec:number=1200)
         {
-            this.tipText = tipText;
-            this.textsize = size;
             super();
+            this.tipText = tipText;
+            this.tipImg = tipimg;
+            this.bDisappear = disp;
+            this.disSecond = sec;
+
+            this.init();
         }
         public init():void
         {
-            this.tipbg = createBitmapByName("alertBg_png");
+            if(!this.bDisappear) {
+                var coverbg:egret.Shape = GameUtil.createRect(0, 0, 480, 800, 0.4);
+                this.addChild(coverbg);
+                this.touchEnabled = true;
+            }
+
+            this.tipbg = createBitmapByName(this.tipImg);
             this.tipbg.x = this.mStageW/2;
             this.tipbg.y = this.mStageH/2;
             this.addChild(this.tipbg);
 
             this.showtip();
-            this.showbutton();
+            if(!this.bDisappear)
+            {
+                this.showbutton();
+            }
+            else
+            {
+                var tw = egret.Tween.get(this);
+                tw.to({alpha:0},this.disSecond).call(this.close,this);
+            }
+
         }
 
         private showtip():void
@@ -38,6 +63,10 @@ module GameUtil
         public setTextwidth(width:number):void
         {
             this.text.width = width;
+        }
+        public setTextSize(size:number):void
+        {
+            this.text.size = size;
         }
 
         private showbutton():void

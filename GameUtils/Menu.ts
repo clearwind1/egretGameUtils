@@ -71,6 +71,18 @@ module GameUtil
         }
 
         /**
+         * 设置按钮图片
+         * @param normal
+         * @param select
+         */
+        public setButtonTexture(normal: string, select: string):void
+        {
+            this.menuNormalTexture = RES.getRes(normal);
+            this.menuSelectTexture = RES.getRes(select);
+            this.btnImg.texture = this.menuNormalTexture;
+        }
+
+        /**
          * 设置按钮文字
          * @param text {string} 文字
          * @param size {number} 文字大小
