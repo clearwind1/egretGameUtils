@@ -9,8 +9,8 @@ module GameUtil
     {
         private textsize:number = 30;
         private tipText:string;
-        private tipbg:egret.Bitmap;
-        private text:egret.TextField;
+        private tipbg:GameUtil.MyBitmap;
+        private text:GameUtil.MyTextField;
         private tipImg:string;
         private bDisappear:boolean;
         private disSecond:number;
@@ -38,15 +38,22 @@ module GameUtil
         public init():void
         {
             if(!this.bDisappear) {
-                var coverbg:egret.Shape = GameUtil.createRect(0, 0, 480, 800, 0.4);
+                var coverbg:egret.Shape = GameUtil.createRect(0, 0, window.screen.availWidth, window.screen.availHeight, 0.4);
                 this.addChild(coverbg);
                 this.touchEnabled = true;
             }
 
-            this.tipbg = createBitmapByName(this.tipImg);
-            this.tipbg.x = this.mStageW/2;
-            this.tipbg.y = this.mStageH/2;
-            this.addChild(this.tipbg);
+            if(this.tipImg == null){
+                var tipbgcover: egret.Shape = GameUtil.createRect(this.mStageW/2,this.mStageH/2,window.screen.availWidth,100,1,0x8c8b88);
+                tipbgcover.anchorOffsetX = tipbgcover.width/2;
+                tipbgcover.anchorOffsetY = tipbgcover.height/2;
+                this.addChild(tipbgcover);
+            }
+            else
+            {
+                this.tipbg = new GameUtil.MyBitmap(RES.getRes(this.tipImg),this.mStageW/2,this.mStageH/2);
+                this.addChild(this.tipbg);
+            }
 
             this.showtip();
             if(!this.bDisappear)
@@ -66,8 +73,8 @@ module GameUtil
          */
         private showtip():void
         {
-            this.text = createTextField(this.mStageW/2,this.mStageH/2,this.textsize);
-            this.text.text = this.tipText;
+            this.text = new GameUtil.MyTextField(this.mStageW/2,this.mStageH/2,this.textsize);
+            this.text.setText(this.tipText);
             this.text.textColor = 0x000000;
             this.addChild(this.text);
         }
@@ -87,12 +94,10 @@ module GameUtil
          */
         public setTextSize(size:number):void
         {
-            this.text.size = size;
+            this.text.setSize(size);
         }
         public setTextHor(anchorX:number,anchorY:number,align:string,offx:number):void
         {
-            this.text.anchorX = anchorX;
-            this.text.anchorY = anchorY;
             this.text.textAlign = align;
             this.text.x = this.mStageW/2 - this.tipbg.width/2 + offx;
         }

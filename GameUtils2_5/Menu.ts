@@ -14,13 +14,13 @@ module GameUtil
         private backFun: Function;
         private param:any[];//回调参数
         private thisObj;
-        private btnImg: egret.Bitmap;
-        private addImg: egret.Bitmap;
+        private btnImg: GameUtil.MyBitmap;
+        private addImg: GameUtil.MyBitmap;
 
         private bScaleMode: boolean = false;
         private mScale: number = 0.9;
 
-        private mTextField: egret.TextField;
+        private mTextField: GameUtil.MyTextField;
 
         private isActive: boolean = false;
 
@@ -42,14 +42,10 @@ module GameUtil
 
         private init(normal: string, select: string, backFun: Function = null)
         {
-
-            this.anchorX = this.anchorY = 0.5;
-
             this.menuNormalTexture = RES.getRes(normal);
             this.menuSelectTexture = RES.getRes(select);
             this.backFun = backFun;
-            this.btnImg = new egret.Bitmap();
-            this.btnImg.texture = this.menuNormalTexture;
+            this.btnImg = new GameUtil.MyBitmap(this.menuNormalTexture,0,0);
             this.addChild(this.btnImg);
 
             this.touchEnabled = true;
@@ -57,6 +53,11 @@ module GameUtil
             this.addEventListener(egret.TouchEvent.TOUCH_MOVE,this.TouchMove,this);
             this.addEventListener(egret.TouchEvent.TOUCH_END,this.TouchEnd,this);
             this.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE,this.TouchCancel,this);
+        }
+
+        public setBackFun(backFun: Function):void
+        {
+            this.backFun = backFun;
         }
 
         /**
@@ -78,35 +79,34 @@ module GameUtil
         {
             this.menuNormalTexture = RES.getRes(normal);
             this.menuSelectTexture = RES.getRes(select);
-            this.btnImg.texture = this.menuNormalTexture;
+            this.btnImg.setNewTexture(this.menuNormalTexture);
         }
 
         public addButtonImg(img:string,offx:number=0,offy:number=0):void
         {
-            this.addImg = createBitmapByName(img);
-            this.addImg.x = this.btnImg.texture.textureWidth/2 + offx;
-            this.addImg.y = this.btnImg.texture.textureHeight/2 + offy;
+            this.addImg = new GameUtil.MyBitmap(RES.getRes(img),offx,offy);
             this.addChild(this.addImg);
         }
         public setAddImgTexture(img:string)
         {
-            this.addImg.texture = RES.getRes(img);
+            this.addImg.setNewTexture(RES.getRes(img));
         }
 
-        public addButtonText(text:string,offx:number=0,offy:number=0):void
+        public addButtonText(text:string,size:number,offx:number=0,offy:number=0):void
         {
             if(this.btnImg.texture != null){
-                this.mTextField = createTextField(this.btnImg.texture.textureWidth/2+offx,this.btnImg.texture.textureHeight/2+offy,20);
+                console.log("fdsafdsafdsa=====",this.btnImg.texture.$getTextureWidth()/2);
+                this.mTextField = new GameUtil.MyTextField(offx,offy,size);//createTextField(this.btnImg.texture.$getTextureWidth()/2+offx,this.btnImg.texture.$getTextureHeight()/2+offy,20);
             }
             else
             {
-                this.mTextField = createTextField(offx,offy,20);
+                this.mTextField = new GameUtil.MyTextField(offx,offy,size);
             }
 
-            this.mTextField.text = text;
+            this.mTextField.setText(text);
             this.addChild(this.mTextField);
         }
-        public getBtnText():egret.TextField
+        public getBtnText():GameUtil.MyTextField
         {
             return this.mTextField;
         }
@@ -120,7 +120,7 @@ module GameUtil
         private TouchBegin(event:egret.TouchEvent):void
         {
             //console.log("touchbegin");
-            this.btnImg.texture = this.menuSelectTexture;
+            this.btnImg.setNewTexture(this.menuSelectTexture);
             if(this.bScaleMode)
             {
                 this.scaleX = this.scaleY = this.mScale;
@@ -135,7 +135,7 @@ module GameUtil
         private TouchEnd(event:egret.TouchEvent):void
         {
             //console.log("touchend");
-            this.btnImg.texture = this.menuNormalTexture;
+            this.btnImg.setNewTexture(this.menuNormalTexture);
             if(this.bScaleMode)
             {
                 this.scaleX = this.scaleY = 1;
@@ -151,7 +151,7 @@ module GameUtil
         private TouchCancel(event:egret.TouchEvent):void
         {
             //console.log("touchcancel");
-            this.btnImg.texture = this.menuNormalTexture;
+            this.btnImg.setNewTexture(this.menuNormalTexture);
             if(this.bScaleMode)
             {
                 this.scaleX = this.scaleY = 1;

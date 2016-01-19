@@ -31,6 +31,8 @@ module GameUtil
 
         private loaded(event:egret.Event):void
         {
+            //this.thisObj.removeChild(GameUtil.WaitServerPanel.getInstace());
+
             this.urlLoader.removeEventListener(egret.Event.COMPLETE,this.loaded,this);
 
             this.thisObj.removeChild(this.coverBg);
@@ -41,7 +43,6 @@ module GameUtil
             }
 
             //console.log("GameUtil.WaitServerPanel=========",GameUtil.WaitServerPanel.getInstace());
-            //this.thisObj.removeChild(GameUtil.WaitServerPanel.getInstace());
         }
 
         public send( param:any, file?:string, loaded:Function = null, thisObj:any = null,url:string=GameUtil.GameConfig.IP):void
@@ -58,8 +59,7 @@ module GameUtil
 
             this.urlLoader.load( this.urlRequest );
 
-
-            this.coverBg = GameUtil.createRect(0,0,480,800,0.5);
+            this.coverBg = GameUtil.createRect(0,0,window.screen.availWidth,window.screen.availHeight,0);
             this.thisObj.addChild(this.coverBg);
             this.coverBg.touchEnabled = true;
 

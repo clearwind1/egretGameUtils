@@ -7,75 +7,15 @@ module GameUtil
     //游戏配置
     export class GameConfig
     {
-        public static IP:string = "m.km1818.com/wsyx";        //http连接地址
+        public static IP:string = "springmeeting.sxd55.com";        //http连接地址
         public static bRunFPS:boolean = false;              //是否显示FPS
 
         //场景转换
         public static NullAction:number = 0;            //无动画
         public static CrossLeft:number = 1;             //从左往右
         public static TransAlpha:number = 2;            //淡入淡出
+        public static OpenDoor:number = 3;              //开门方式
 
-    }
-
-    /**
-     * 创建一张位图
-     * @param name {string} 位图文件名
-     * @returns {egret.Bitmap} 位图
-     */
-    export function createBitmapByName(name:string):egret.Bitmap
-    {
-        var result:egret.Bitmap = new egret.Bitmap();
-        var texture:egret.Texture = RES.getRes(name);
-        result.texture = texture;
-        result.anchorX = result.anchorY = 0.5;
-        return result;
-    }
-
-    /**
-     * 创建文字
-     * @param x {number} x轴坐标
-     * @param y {number} y轴坐标
-     * @param size {number} 大小
-     * @param anchorX {number} X轴锚点
-     * @param anchorY {number} Y轴锚点
-     * @param align {string} 对齐方式
-     * @returns {egret.TextField} 文字
-     */
-    export function createTextField(x:number,y:number,size:number,anchorX:number=0.5,anchorY:number=0.5,align:string=egret.HorizontalAlign.CENTER):egret.TextField
-    {
-        var textfiled:egret.TextField = new egret.TextField();
-        textfiled.x = x;
-        textfiled.y = y;
-        textfiled.anchorX = anchorX;
-        textfiled.anchorY = anchorY;
-        textfiled.size = size;
-        textfiled.textAlign = align;
-        return textfiled;
-    }
-
-    /**
-     * 创建一个输入文本
-     * @param x
-     * @param y
-     * @param size
-     * @param width
-     * @param height
-     * @param maxChars 最大输入数量
-     * @returns {egret.TextField}
-     */
-    export function createInputText(x:number,y:number,size:number,width:number,height:number,maxChars:number = 0):GameUtil.InputTextFiled
-    {
-        var textfiled: GameUtil.InputTextFiled = new GameUtil.InputTextFiled();
-        textfiled.type = egret.TextFieldType.INPUT;
-        textfiled.text = "";
-        textfiled.x = x;
-        textfiled.y = y;
-        textfiled.width = width;
-        textfiled.height = height;
-        textfiled.size = size;
-        textfiled.maxChars = maxChars;
-        textfiled.textAlign = egret.HorizontalAlign.LEFT;
-        return textfiled;
     }
 
     /**
@@ -95,6 +35,18 @@ module GameUtil
         shp.y = y;
         shp.graphics.beginFill(color,alpha);
         shp.graphics.drawRect(0,0,width,height);
+        shp.graphics.endFill();
+        return shp;
+    }
+
+
+    export function createCircle(x:number,y:number,r:number,alpha:number=1,color:number=0x000000):egret.Shape
+    {
+        var shp:egret.Shape = new egret.Shape();
+        shp.x = x;
+        shp.y = y;
+        shp.graphics.beginFill( color, alpha);
+        shp.graphics.drawCircle( 0, 0, r );
         shp.graphics.endFill();
         return shp;
     }
@@ -145,7 +97,7 @@ module GameUtil
     }
 
     /**
-     * 数字向上飘动动画
+     * 数字向上飘动动画（待改进，向指定地方移动）
      * @param thisObj
      * @param x
      * @param y
@@ -158,14 +110,15 @@ module GameUtil
         var textfiled:egret.TextField = new egret.TextField();
         textfiled.x = x;
         textfiled.y = y;
-        textfiled.anchorX = 0.5;
-        textfiled.anchorY = 0.5;
         textfiled.size = size;
         textfiled.textAlign = "center";
         textfiled.textColor = color;
         textfiled.text = number;
 
         thisObj.addChild(textfiled);
+
+        textfiled.anchorOffsetX = 0.5*textfiled.width;
+        textfiled.anchorOffsetY = 0.5*textfiled.height;
 
         egret.Tween.get(textfiled).to({y:y-40},700);
         egret.Tween.get(textfiled).to({alpha:0},700).call(function(){thisObj.removeChild(textfiled);},thisObj);
@@ -192,6 +145,16 @@ module GameUtil
             egret.localStorage.clear();
         }
 
+    }
+
+    /**
+     * 获取当前链接参数
+     * @param name 参数名
+     */
+    export function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return decodeURI(r[2]); return null;
     }
 
 }
