@@ -14,7 +14,7 @@ module GameUtil
         private backFun: Function;
         private param:any[];//回调参数
         private thisObj;
-        private btnImg: GameUtil.MyBitmap;
+        public btnImg: GameUtil.MyBitmap;
         private addImg: GameUtil.MyBitmap;
 
         private bScaleMode: boolean = false;
@@ -95,7 +95,7 @@ module GameUtil
         public addButtonText(text:string,size:number,offx:number=0,offy:number=0):void
         {
             if(this.btnImg.texture != null){
-                console.log("fdsafdsafdsa=====",this.btnImg.texture.$getTextureWidth()/2);
+                //console.log("fdsafdsafdsa=====",this.btnImg.texture.$getTextureWidth()/2);
                 this.mTextField = new GameUtil.MyTextField(offx,offy,size);//createTextField(this.btnImg.texture.$getTextureWidth()/2+offx,this.btnImg.texture.$getTextureHeight()/2+offy,20);
             }
             else

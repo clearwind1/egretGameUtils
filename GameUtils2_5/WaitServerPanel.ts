@@ -5,22 +5,29 @@
 
 module GameUtil
 {
-    export class WaitServerPanel extends egret.DisplayObjectContainer
+    export class WaitServerPanel extends GameUtil.BassPanel
     {
 
         private coverBg: egret.Shape;
+        private curalpha: number;
         public constructor(alpha:number = 0)
         {
+            this.curalpha = alpha;
             super();
-            this.init(alpha);
         }
 
-        private init(alpha:number):void
+        public init()
         {
-            this.coverBg = GameUtil.createRect(0,0,640,1136,0);
+            this.coverBg = GameUtil.createRect(0,0,this.mStageW,this.mStageH,this.curalpha);
             this.addChild(this.coverBg);
 
             this.touchEnabled = true;
+
+            var img: GameUtil.MyBitmap = new GameUtil.MyBitmap(RES.getRes('welcomeball_png'),this.mStageW/2,this.mStageH/2);
+            img.setScale(0.5);
+            this.addChild(img);
+
+            egret.Tween.get(img,{loop:true}).to({rotation:359},1000);
 
         }
 
@@ -28,18 +35,5 @@ module GameUtil
         {
             this.coverBg.alpha = aplha;
         }
-
-
-        private static _instance: WaitServerPanel;
-        public static getInstace(): WaitServerPanel
-        {
-            if(this._instance == null)
-            {
-                this._instance = new GameUtil.WaitServerPanel(0);
-            }
-
-            return this._instance;
-        }
-
     }
 }

@@ -12,7 +12,7 @@ module GameUtil
         private onLoader: Function;
         private thisObj: any;
 
-        private coverBg: egret.Shape;
+        private coverBg: WaitServerPanel;
 
         public constructor(reqMethod:string=egret.URLRequestMethod.POST,dataFormat:string=egret.URLLoaderDataFormat.TEXT)
         {
@@ -36,6 +36,7 @@ module GameUtil
             this.urlLoader.removeEventListener(egret.Event.COMPLETE,this.loaded,this);
 
             this.thisObj.removeChild(this.coverBg);
+
             var data:any = JSON.parse(this.urlLoader.data);
             if(this.onLoader != null)
             {
@@ -59,9 +60,8 @@ module GameUtil
 
             this.urlLoader.load( this.urlRequest );
 
-            this.coverBg = GameUtil.createRect(0,0,window.screen.availWidth,window.screen.availHeight,0);
-            this.thisObj.addChild(this.coverBg);
-            this.coverBg.touchEnabled = true;
+            this.coverBg = new GameUtil.WaitServerPanel(0.5);
+            thisObj.addChild(this.coverBg);
 
             //console.log("GameUtil.WaitServerPanel.getInstace()=========",GameUtil.WaitServerPanel.getInstace());
             //this.thisObj.addChild(GameUtil.WaitServerPanel.getInstace());

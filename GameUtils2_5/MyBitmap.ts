@@ -23,13 +23,25 @@ module GameUtil
         public setNewTexture(texture:egret.Texture)
         {
             this.texture = texture;
-            this.setanchorOff(0.5,0.5);
+            //this.setanchorOff(0.5,0.5);
         }
 
         public setanchorOff(anchorx:number,anchory:number)
         {
             this.anchorOffsetX = this.$getWidth()*anchorx;
             this.anchorOffsetY = this.$getHeight()*anchory;
+        }
+
+        public setScale(sc:number)
+        {
+            this.$setScaleX(sc);
+            this.$setScaleY(sc);
+        }
+
+        public setSize(w:number,h:number)
+        {
+            this.width = w;
+            this.height = h;
         }
 
     }

@@ -16,6 +16,8 @@ module GameUtil
 
         private init(x:number,y:number,size:number,anchorX:number,anchorY:number)
         {
+            this.textColor = 0x000000;
+            this.fontFamily = '微软雅黑';
             this.$setX(x);
             this.$setY(y);
             this.$setSize(size);

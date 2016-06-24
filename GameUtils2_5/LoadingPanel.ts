@@ -20,6 +20,9 @@ module GameUtil
         private loadingbarOffX: number;
         private loadingbarOffY: number;
 
+        private logo: GameUtil.MyBitmap;
+        private shapimg: egret.Shape;
+
         public constructor(fun:Function,obj:any,offx=0,offy=0,isgif:boolean = false,gifTotal:number = 4)
         {
             this.loadedfun = fun;
@@ -40,6 +43,31 @@ module GameUtil
         {
             //console.log("onComplete");
 
+            var shap: egret.Shape = GameUtil.createRect(0,0,this.mStageW,this.mStageH);
+            this.addChild(shap);
+
+            var loadingbg: GameUtil.MyBitmap = new GameUtil.MyBitmap(RES.getRes('loading_png'),0,0);
+            loadingbg.setanchorOff(0,0);
+            this.addChild(loadingbg);
+
+            egret.Tween.get(loadingbg,{loop:true}).to({alpha:0.7},1000).to({alpha:1},1000);
+
+            this.logo = new GameUtil.MyBitmap(RES.getRes('logo_png'),374,464);
+            this.addChild(this.logo);
+            this.shapimg = GameUtil.createRect(304,560,this.logo.width+20,this.logo.height+10);
+            this.shapimg.$setAnchorOffsetY(this.logo.height+10);
+            this.addChild(this.shapimg);
+            this.logo.mask = this.shapimg;
+            this.shapimg.y = 740;
+
+
+            //Config to load process interface
+            this.loadingView = new LoadingUI();
+            this.loadingView.x = this.mStageW/2;
+            this.loadingView.y = this.mStageH-100;
+            this.addChild(this.loadingView);
+            this.loadingView.anchorOffsetX = this.loadingView.width/2;
+
             if(this.IsGif){
                 this.gifruncount = 0;
                 this.loadingbar = new GameUtil.MyBitmap(RES.getRes("loadinggif0_png"),this.mStageW/2 + this.loadingbarOffX,this.mStageH/2 + this.loadingbarOffY);
@@ -48,7 +76,8 @@ module GameUtil
             }
             else
             {
-                this.loadingbar = new GameUtil.MyBitmap(RES.getRes("loadingbar_png"),this.loadingbarOffX,this.mStageH/2 + this.loadingbarOffY);
+                this.loadingbar = new GameUtil.MyBitmap(RES.getRes("loadingbar_png"),this.loadingbarOffX,this.mStageH + 100);
+                this.loadingbar.x = (this.mStageW-this.loadingbar.texture.textureWidth)/2;
                 this.loadingbar.anchorOffsetX = 0;
                 var w:number = this.loadingbar.texture.textureWidth-8;
                 var h:number = this.loadingbar.texture.textureHeight-8;
@@ -74,13 +103,6 @@ module GameUtil
         private loadingRes():void
         {
             //设置加载进度界面
-            //Config to load process interface
-            this.loadingView = new LoadingUI();
-            this.loadingView.x = this.mStageW/2;
-            this.loadingView.y = this.mStageH/2 + this.loadingbar.height/2 + 30;
-            this.addChild(this.loadingView);
-            this.loadingView.anchorOffsetX = this.loadingView.width/2;
-
             //初始化Resource资源加载库
             //initiate Resource loading library
             RES.addEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
@@ -109,12 +131,9 @@ module GameUtil
                 RES.removeEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onResourceLoadError, this);
                 RES.removeEventListener(RES.ResourceEvent.GROUP_PROGRESS, this.onResourceProgress, this);
 
-                //if(GameUtil.GameConfig.bRunFPS)
-                //    egret.Profiler.run();
 
                 this.loadedfun.apply(this.thisObj);
 
-                this.parent.removeChild(this);
             }
         }
 
@@ -136,6 +155,7 @@ module GameUtil
          */
         private onResourceProgress(event:RES.ResourceEvent):void {
             if (event.groupName == "preload") {
+
                 if(!this.IsGif){
                     this.setPro(event.itemsLoaded/event.itemsTotal);
                 }
@@ -146,6 +166,7 @@ module GameUtil
         public setPro(persend:number):void
         {
             this.loadingbar.width = this.loadingbar.texture.textureWidth*persend;
+            this.shapimg.y = 740 - (180*persend);
             //console.log("this.width=====",this.width);
         }
 

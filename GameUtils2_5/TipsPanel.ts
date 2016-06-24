@@ -44,7 +44,7 @@ module GameUtil
             }
 
             if(this.tipImg == null){
-                var tipbgcover: egret.Shape = GameUtil.createRect(this.mStageW/2,this.mStageH/2,window.screen.availWidth,100,1,0x8c8b88);
+                var tipbgcover: egret.Shape = GameUtil.createRect(this.mStageW/2,this.mStageH/2,this.mStageW,100,1,0x8c8b88);
                 tipbgcover.anchorOffsetX = tipbgcover.width/2;
                 tipbgcover.anchorOffsetY = tipbgcover.height/2;
                 this.addChild(tipbgcover);

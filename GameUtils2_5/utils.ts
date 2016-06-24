@@ -7,7 +7,7 @@ module GameUtil
     //游戏配置
     export class GameConfig
     {
-        public static IP:string = "springmeeting.sxd55.com";        //http连接地址
+        public static IP:string = "api.h5.gamexun.com";        //http连接地址
         public static bRunFPS:boolean = false;              //是否显示FPS
 
         //场景转换
@@ -15,6 +15,37 @@ module GameUtil
         public static CrossLeft:number = 1;             //从左往右
         public static TransAlpha:number = 2;            //淡入淡出
         public static OpenDoor:number = 3;              //开门方式
+
+        public static DesignWidth:number = 750;
+        public static DesignHeight:number = 1336;
+
+        private stagetY: number = 0;
+
+        public bfirstplay: boolean;
+
+        public constructor()
+        {
+
+        }
+
+        private static _instance: GameConfig = null;
+        public static _i(): GameConfig
+        {
+            if(this._instance == null){
+                this._instance = new GameUtil.GameConfig();
+            }
+
+            return this._instance;
+        }
+
+        public setStageHeight(stagety: number):void
+        {
+            this.stagetY = stagety;
+        }
+        public getSH():number
+        {
+            return this.stagetY;
+        }
 
     }
 
@@ -155,6 +186,15 @@ module GameUtil
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
         var r = window.location.search.substr(1).match(reg);
         if (r != null) return decodeURI(r[2]); return null;
+    }
+
+    export function setscreenY(y:number):number{
+        if(y >= GameUtil.GameConfig.DesignHeight/2){
+            return GameConfig._i().getSH() - (GameUtil.GameConfig.DesignHeight-y);
+        }else
+        {
+            return y;
+        }
     }
 
 }

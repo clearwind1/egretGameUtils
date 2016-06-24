@@ -52,6 +52,11 @@ module GameUtil
             this.progressbar.y = y;
         }
 
+        public setreback()
+        {
+            this.progressbar.scaleX = -1;
+        }
+
         /**
          * 设置进度条百分比
          * @param percent {number} 进度条百分比

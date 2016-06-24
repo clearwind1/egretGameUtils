@@ -5,7 +5,7 @@ module GameUtil
 {
     export class InputTextFiled extends GameUtil.MyTextField
     {
-        private baseText: string;
+        public baseText: string;
         private baseTextAlpha: number;
         private basetextsize: number;
         private sourcesize: number;
