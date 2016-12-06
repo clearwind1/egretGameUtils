@@ -37,6 +37,12 @@ module GameUtil
         {
             //RES.getResByUrl(this.imageUrl,this.onComplete,this,RES.ResourceItem.TYPE_IMAGE);
             new GameUtil.LoadingLogopre(this.onComplete,this);
+
+            var param:Object = {
+                openId: GameData._i().UserInfo['openid'],
+                nickname: GameUtil.getQueryString('nickname')
+            }
+            GameUtil.Http.getinstance().send(param, "/paopao/adduserinfo", this.setplayerinfo, this);
         }
         private onComplete(event:any):void
         {
@@ -155,6 +161,35 @@ module GameUtil
         public getPro():number
         {
             return this.loadingbar.width/this.loadingbar.texture.textureWidth;
+        }
+
+        private setplayerinfo(data:any):void
+        {
+            console.log("inforesult=========",data);
+            if(data['code']==0)
+            {
+                console.log(data['msg']);
+            }else
+            {
+                var result = data['result'];
+                console.log(result);
+                GameData._i().UserInfo['ID'] = result['id'];
+                GameData._i().UserInfo['nickname'] = result['nickname'];
+                GameData._i().UserInfo['gender'] = result['gender'];
+                GameData._i().UserInfo['roletype'] = result['roletype'];
+                GameData._i().UserInfo['rolename'] = result['rolename'];
+                GameData._i().UserInfo['openid'] = result['openid'];
+                GameData._i().UserInfo['paopaocount'] = result['paopaocount'];
+                GameData._i().UserInfo['jifen'] = result['jifen'];
+                GameData._i().UserInfo['killcount'] = result['killcount'];
+                GameData._i().UserInfo['bekillcount'] = result['bekillcount'];
+                GameData._i().UserInfo['prizecount'] = 3-result['prizecount'];
+
+                GameData._i().init();
+
+                GameData._i().isLoadingend = true;
+
+            }
         }
 
     }

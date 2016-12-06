@@ -37,6 +37,9 @@ module GameUtil
         }
         public init():void
         {
+
+            this.showtip();
+
             if(!this.bDisappear) {
                 var coverbg:egret.Shape = GameUtil.createRect(0, 0, window.screen.availWidth, window.screen.availHeight, 0.4);
                 this.addChild(coverbg);
@@ -44,7 +47,7 @@ module GameUtil
             }
 
             if(this.tipImg == null){
-                var tipbgcover: egret.Shape = GameUtil.createRect(this.mStageW/2,this.mStageH/2,window.screen.availWidth,100,1,0x8c8b88);
+                var tipbgcover: egret.Shape = GameUtil.createRect(this.mStageW/2,this.mStageH/2,this.text.width*2,this.text.height*1.5,1,0x8c8b88);
                 tipbgcover.anchorOffsetX = tipbgcover.width/2;
                 tipbgcover.anchorOffsetY = tipbgcover.height/2;
                 this.addChild(tipbgcover);
@@ -55,7 +58,6 @@ module GameUtil
                 this.addChild(this.tipbg);
             }
 
-            this.showtip();
             if(!this.bDisappear)
             {
                 this.showbutton();
@@ -65,6 +67,8 @@ module GameUtil
                 var tw = egret.Tween.get(this);
                 tw.to({alpha:1},300).to({alpha:0},this.disSecond).call(this.close,this);
             }
+
+            this.addChild(this.text);
 
         }
 
@@ -76,7 +80,7 @@ module GameUtil
             this.text = new GameUtil.MyTextField(this.mStageW/2,this.mStageH/2,this.textsize);
             this.text.setText(this.tipText);
             this.text.textColor = 0x000000;
-            this.addChild(this.text);
+            //this.addChild(this.text);
         }
 
         /**

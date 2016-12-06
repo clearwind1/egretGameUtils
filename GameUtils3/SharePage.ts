@@ -6,7 +6,8 @@
 class SharePage extends egret.DisplayObjectContainer
 {
 
-    private desctext: string = '盛讯小游戏--粽粽大作战';
+    private desctext: string = '盛讯小游戏--泡泡大作战';
+    private newurl: string = 'http://bubblefight.h5.gamexun.com/';
 
     public constructor()
     {
@@ -23,7 +24,7 @@ class SharePage extends egret.DisplayObjectContainer
         var parma:Object = {
             url: urllocal
         }
-        GameUtil.Http.getinstance().send(parma,"/weixinshare/share",this.share,this,"spring.gamexun.com");
+        GameUtil.Http.getinstance().send(parma,"/weixinshare/share",this.share,this,"api.h5.gamexun.com");//http://api.h5.gamexun.com/weixinshare/share
         //GameUtil.Http.getinstance().send(parma,"/jssdk/config",this.share,this,'api.sztc.gamexun.com')
     }
     private share(data:any):void
@@ -62,6 +63,12 @@ class SharePage extends egret.DisplayObjectContainer
         this.getWeiXinShareAppMessage();
         this.getWeiXinShareTimeline();
     }
+    public setNewUrl(url:string)
+    {
+        this.newurl = url;
+        this.getWeiXinShareAppMessage();
+        this.getWeiXinShareTimeline();
+    }
 
     /**
      * 获取微信分享到朋友圈
@@ -71,8 +78,8 @@ class SharePage extends egret.DisplayObjectContainer
         var self:any = this;
         var bodyMenuShareTimeline = new BodyMenuShareTimeline();
         bodyMenuShareTimeline.title = this.desctext;
-        bodyMenuShareTimeline.link = 'http://savequyuan.h5.gamexun.com/';
-        bodyMenuShareTimeline.imgUrl = 'http://savequyuan.h5.gamexun.com/shareicon.png';
+        bodyMenuShareTimeline.link = this.newurl;
+        bodyMenuShareTimeline.imgUrl = 'http://bubblefight.h5.gamexun.com/shareicon.png';
         bodyMenuShareTimeline.trigger = ()=> {
             // alert('用户点击分享到朋友圈');
         };
@@ -102,10 +109,10 @@ class SharePage extends egret.DisplayObjectContainer
         var self: any = this;
 
         var bodyMenuShareAppMessage = new BodyMenuShareAppMessage();
-        bodyMenuShareAppMessage.title = '盛讯小游戏--粽粽大作战';
+        bodyMenuShareAppMessage.title = '盛讯小游戏--泡泡大作战';
         bodyMenuShareAppMessage.desc = this.desctext;
-        bodyMenuShareAppMessage.link = 'http://savequyuan.h5.gamexun.com/';
-        bodyMenuShareAppMessage.imgUrl = 'http://savequyuan.h5.gamexun.com/shareicon.png';
+        bodyMenuShareAppMessage.link = this.newurl;
+        bodyMenuShareAppMessage.imgUrl = 'http://bubblefight.h5.gamexun.com/shareicon.png';
         bodyMenuShareAppMessage.trigger = ()=> {
             // alert('用户点击发送给朋友');
         };

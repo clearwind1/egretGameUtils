@@ -3,7 +3,6 @@
  */
 module GameUtil
 {
-
     //游戏配置
     export class GameConfig
     {
@@ -233,6 +232,44 @@ module GameUtil
             gameid: 0
         }
         GameUtil.Http.getinstance().send(param, "/weixinpay/pay", backfun, cont,url);
+    }
+
+    //决断是否微信
+    export function isWeiXin():boolean
+    {
+        var ua = window.navigator.userAgent.toLowerCase();
+       // alert('isweixin:'+ua.indexOf('micromessenger'));
+        if(ua.indexOf('micromessenger') != -1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    //决断是否安卓
+    export function isAndroid():boolean
+    {
+        var ua = window.navigator.userAgent.toLowerCase();
+       // alert('isAndroid:'+ua.indexOf('android'));
+        if(ua.indexOf('android') != -1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    //变灰滤镜
+    export function changeGray(obj)
+    {
+        //颜色矩阵数组
+        var colorMatrix = [
+            0.3,0.6,0,0,0,
+            0.3,0.6,0,0,0,
+            0.3,0.6,0,0,0,
+            0,0,0,1,0
+        ];
+        var colorFlilter = new egret.ColorMatrixFilter(colorMatrix);
+        obj.filters = [colorFlilter];
     }
 
 }

@@ -11,6 +11,7 @@ module GameUtil
     {
         private menuNormalTexture:egret.Texture = null;
         private menuSelectTexture:egret.Texture = null;
+        private menubgimg: egret.Shape = null;
         private backFun: Function;
         private param:any[];//回调参数
         private thisObj;
@@ -32,21 +33,42 @@ module GameUtil
          * @param backFun {Function} 按钮绑定的事件函数
          * @param param {any[]} 按钮绑定的事件函数的参数
          */
-        public constructor(context: any, normal: string, select: string, backFun: Function = null,param:any[] = null)
+        public constructor(context: any, normal: string, select: string, backFun: Function,param:any[] = null,shape:egret.Shape = null)
         {
             super();
             this.thisObj = context;
             this.param = param;
-            this.init(normal,select,backFun);
+            this.menubgimg = shape;
+            this.btnImg = null;
+            if(this.menubgimg != null)
+            {
+                this.initwithshape(backFun);
+            }
+            else
+            {
+                this.initwithimg(normal,select,backFun);
+            }
         }
 
-        private init(normal: string, select: string, backFun: Function = null)
+        public initwithimg(normal: string, select: string, backFun: Function = null)
         {
             this.menuNormalTexture = RES.getRes(normal);
             this.menuSelectTexture = RES.getRes(select);
             this.backFun = backFun;
             this.btnImg = new GameUtil.MyBitmap(this.menuNormalTexture,0,0);
             this.addChild(this.btnImg);
+
+            this.touchEnabled = true;
+            this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,this.TouchBegin,this);
+            this.addEventListener(egret.TouchEvent.TOUCH_MOVE,this.TouchMove,this);
+            this.addEventListener(egret.TouchEvent.TOUCH_END,this.TouchEnd,this);
+            this.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE,this.TouchCancel,this);
+        }
+
+        public initwithshape(backFun: Function)
+        {
+            this.backFun = backFun;
+            this.addChild(this.menubgimg);
 
             this.touchEnabled = true;
             this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,this.TouchBegin,this);
@@ -94,8 +116,8 @@ module GameUtil
 
         public addButtonText(text:string,size:number,offx:number=0,offy:number=0):void
         {
-            if(this.btnImg.texture != null){
-                console.log("fdsafdsafdsa=====",this.btnImg.texture.$getTextureWidth()/2);
+            if(this.btnImg != null){
+                //console.log("fdsafdsafdsa=====",this.btnImg.texture.$getTextureWidth()/2);
                 this.mTextField = new GameUtil.MyTextField(offx,offy,size);//createTextField(this.btnImg.texture.$getTextureWidth()/2+offx,this.btnImg.texture.$getTextureHeight()/2+offy,20);
             }
             else
@@ -120,7 +142,10 @@ module GameUtil
         private TouchBegin(event:egret.TouchEvent):void
         {
             //console.log("touchbegin");
-            this.btnImg.setNewTexture(this.menuSelectTexture);
+            if(this.btnImg != null){
+                this.btnImg.setNewTexture(this.menuSelectTexture);
+            }
+
             if(this.bScaleMode)
             {
                 this.scaleX = this.scaleY = this.mScale;
@@ -135,7 +160,10 @@ module GameUtil
         private TouchEnd(event:egret.TouchEvent):void
         {
             //console.log("touchend");
-            this.btnImg.setNewTexture(this.menuNormalTexture);
+            if(this.btnImg != null){
+                this.btnImg.setNewTexture(this.menuNormalTexture);
+            }
+
             if(this.bScaleMode)
             {
                 this.scaleX = this.scaleY = 1;
@@ -151,7 +179,10 @@ module GameUtil
         private TouchCancel(event:egret.TouchEvent):void
         {
             //console.log("touchcancel");
-            this.btnImg.setNewTexture(this.menuNormalTexture);
+            if(this.btnImg != null){
+                this.btnImg.setNewTexture(this.menuNormalTexture);
+            }
+
             if(this.bScaleMode)
             {
                 this.scaleX = this.scaleY = 1;
